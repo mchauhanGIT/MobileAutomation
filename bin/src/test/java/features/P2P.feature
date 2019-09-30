@@ -16,7 +16,8 @@ Given user launches the app in "<Platform>" device
    And user clicks on button "P2P_TRANSFER"
    And user waits for "15" seconds
    And user wats for "15" seconds
-   And user enters text in textbox with index "5"
+   And user enters text in textbox with index "1"
+   
    
      
   Examples: 

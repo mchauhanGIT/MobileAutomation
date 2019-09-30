@@ -17,7 +17,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import io.appium.java_client.*;
 import io.appium.java_client.touch.offset.PointOption;
-import meed.base.MeedBasePage;
+
 import net.prodigylabs.config.ObjectRepository;
 import net.prodigylabs.driver.CapabilitiesGenerator;
 import net.prodigylabs.handlers.ScreenshotHandler;
@@ -32,8 +32,7 @@ public class GenericSteps extends BaseTest{
 	WebDriver driver;
     public WebDriverWait wait;
     
-    MeedBasePage meedbasepage = null;
-
+    
     DesiredCapabilities caps = new DesiredCapabilities();
 	ScreenshotHandler screenshot = null;
 	String sName = null;
@@ -42,15 +41,10 @@ public class GenericSteps extends BaseTest{
 	public void setup(Scenario scenario) throws Exception {		
 		System.out.println("Executing Before of Step Defination");
 		sName=scenario.getName();
-		meedbasepage = new MeedBasePage(driver);
+		
 	}
 	
-	@After()
-	public void tearDown() throws Exception {		
-		System.out.println("Executing After of Step Defination");
-        Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
-		driver.quit();
-	}
+	
     
     @Given("^user launches the app in \"(.*?)\" device$")
     public void user_launches_the_app_in_device(String arg1) throws Throwable {    	 
@@ -185,10 +179,7 @@ public class GenericSteps extends BaseTest{
          
         }
     }
-    
-    
-    
-    
+     
     
     @Given("^user wats for \"([^\"]*)\" seconds$")
     public void user_wats_for_seconds(String arg1) throws Throwable {
@@ -204,6 +195,12 @@ public class GenericSteps extends BaseTest{
         }
     }
     
+   /* @After()
+	public void tearDown() throws Exception {		
+		System.out.println("Executing After of Step Defination");
+        Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
+		driver.quit();
+	}*/
 }	
 
 
