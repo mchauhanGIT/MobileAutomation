@@ -3,7 +3,7 @@
 #Feature: Card Swap
 #Scenario: #NA
 
-Feature: Card Swap 
+Feature: Card Swap feature
 @RegressionPack @TC001
 Scenario Outline: Verify Meed customer is able to perform Card Swap
 Given user launches the app in "<Platform>" device
