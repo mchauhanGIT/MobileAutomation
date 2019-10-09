@@ -13,7 +13,7 @@ import cucumber.api.junit.Cucumber;
  
 @RunWith(Cucumber.class)
 @CucumberOptions(		
- features = "src/test/java/features",
+ features = "src/test/java/features/testfile.feature",
  glue= {"stepDefinations"},
  plugin = {"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/VastTestAutomation.html"},
  tags = {"@RegressionPack"},

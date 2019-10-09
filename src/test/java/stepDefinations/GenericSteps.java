@@ -1,23 +1,24 @@
 package stepDefinations;
 
 import java.util.List;
-
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.cucumber.listener.Reporter;
-
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
 import cucumber.api.Scenario;
-import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import io.appium.java_client.*;
+import io.appium.java_client.android.Activity;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.StartsActivity;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.touch.offset.PointOption;
-
 import net.prodigylabs.config.ObjectRepository;
 import net.prodigylabs.driver.CapabilitiesGenerator;
 import net.prodigylabs.handlers.ScreenshotHandler;
@@ -31,25 +32,23 @@ public class GenericSteps extends BaseTest{
 	//public AndroidDriver<MobileElement> driver;
 	WebDriver driver;
     public WebDriverWait wait;
-    
-    
+   
     DesiredCapabilities caps = new DesiredCapabilities();
 	ScreenshotHandler screenshot = null;
 	String sName = null;
     
 	@Before
 	public void setup(Scenario scenario) throws Exception {		
-		System.out.println("Executing Before of Step Defination");
+		//System.out.println("Executing Before of Step Defination");
 		sName=scenario.getName();
 		
 	}
 	
 	
-    
     @Given("^user launches the app in \"(.*?)\" device$")
-    public void user_launches_the_app_in_device(String arg1) throws Throwable {    	 
+    public void user_launches_the_app_in_device(String platform) throws Throwable {    	 
         
-        driver = CapabilitiesGenerator.getInstance().launchApp(arg1);
+        driver = CapabilitiesGenerator.getInstance().launchApp(platform);
         screenshot = new ScreenshotHandler(driver);
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
 	
@@ -166,41 +165,109 @@ public class GenericSteps extends BaseTest{
     } 
     
     
-    @Given("^user enters text in textbox with index \"([^\"]*)\"$")
-    public void user_enters_text_in_textbox_with_index(int index) throws Throwable {
+    
+    @Given("^user enters \"([^\"]*)\" in textbox with index \"([^\"]*)\"$")
+    public void user_enters_in_textbox_with_index(String text, int index) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+    	
     	List<MobileElement> elements = driver.findElements(By.className("android.widget.EditText"));
         System.out.println("Number of elements:" +elements.size());
 
         for (int i=0; i<elements.size();i++)
         {
           System.out.println("button text:" + elements.get(i).getAttribute("text"));
-          elements.get(index).sendKeys("meedqe75@yopmail.com");
+          elements.get(index).sendKeys(text);
           elements.get(index).click();
          
         }
+       
     }
-     
+ 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     
-    @Given("^user wats for \"([^\"]*)\" seconds$")
-    public void user_wats_for_seconds(String arg1) throws Throwable {
-    	List<MobileElement> elements = driver.findElements(By.className("android.widget.EditText"));
-        System.out.println("Number of elements:" +elements.size());
-
-        for (int i=0; i<elements.size();i++)
-        {
-          System.out.println("button text:" + elements.get(i).getAttribute("text"));
-          elements.get(1).sendKeys("meedqe75@yopmail.com");
-          elements.get(1).click();
-         
-        }
+    @Given("^user switches to \"([^\"]*)\" app to get \"([^\"]*)\" for account with email \"([^\"]*)\"  and password \"([^\"]*)\"$")
+    public void user_switches_to_app_to_get_for_account_with_email_and_password(String app_name, String requirement, String email_id, String password) throws Throwable {
+       
+    	Thread.sleep(2000);
+    	Activity activity; 
+    	switch(app_name)
+		{
+			case "chrome":
+				activity = new Activity(ObjectRepository.getString("global.capability.chromeAppPackage"), ObjectRepository.getString("global.capability.chromeAppActivity"));
+		        activity.setStopApp(false);
+		        ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);	
+		        String domain = email_id.split("@")[1];
+		        System.out.println("DOMAIN-- "+ domain);
+		     
+		     //   System.setProperty("webdriver.chrome.driver","\\src\\main\\resources\\chromedriver.exe");
+		        
+		   if(domain.equalsIgnoreCase("gmail.com"))     
+		   {        
+			   try {
+		        	System.out.print("Inside Try block");
+		        //	driver.get("http://www.gmail.com");
+		        	driver.findElement(By.className("android.widget.EditText")).sendKeys("https://"+domain);			        
+			       ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.ENTER));
+			        
+			       System.out.print("Exit try block"); 
+		        }
+		
+			   catch(Exception e)
+			   {
+    				System.out.print("Inside catch block");
+    				
+    					driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']")).sendKeys("https://"+domain);
+    				((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.ENTER));
+    				Thread.sleep(2000);
+    				
+			   }
+		 
+			   finally
+			   {
+			 
+		/*	   driver.findElement(By.xpath("//android.widget.EditText[@resource-id='identifierId']")).sendKeys(email_id);
+		        driver.findElement(By.xpath("//android.widget.Button[@text='Next']")).click();
+		        Thread.sleep(2000);
+		        driver.findElement(By.className("android.widget.EditText")).sendKeys(password);
+		        driver.findElement(By.xpath("//android.widget.Button[@text='Next']")).click();
+		        Thread.sleep(5000);
+			*/ 
+			   }
+		   	}
+		   else if(domain.equalsIgnoreCase("yopmail.com"))  
+		   {
+			   
+		   }
+		break;
+				
+			case "message":
+				 activity = new Activity(ObjectRepository.getString("global.capability.settingsAppPackage"), ObjectRepository.getString("global.capability.settingsAppActivity"));
+		        activity.setStopApp(false);
+		        ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);
+		        driver.findElement(By.className("android.widget.LinearLayout")).click();
+			break;
+			
+		}
+    	    
+        Thread.sleep(2000);
+        
+         //Re launch calculator App
+        activity = new Activity(ObjectRepository.getString("global.capability.meedAppPackage"), ObjectRepository.getString("global.capability.meedAppActivity"));
+        activity.setStopApp(false);
+        
+        ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);
+        Thread.sleep(5000);
     }
     
-   /* @After()
+    
+  /*
+ @After()
 	public void tearDown() throws Exception {		
 		System.out.println("Executing After of Step Defination");
         Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
 		driver.quit();
 	}*/
+	
 }	
 
 
