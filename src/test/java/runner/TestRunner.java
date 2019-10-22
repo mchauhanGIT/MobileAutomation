@@ -13,10 +13,10 @@ import cucumber.api.junit.Cucumber;
  
 @RunWith(Cucumber.class)
 @CucumberOptions(		
- features = "src/test/java/features/testfile.feature",
+ features = "src/test/java/features/New App features/testApp.feature",
  glue= {"stepDefinations"},
- plugin = {"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/VastTestAutomation.html"},
- tags = {"@RegressionPack"},
+ plugin = {"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/TestAutomationReport.html"},
+ tags = {"@TC001"},
  monochrome = true
  )
  

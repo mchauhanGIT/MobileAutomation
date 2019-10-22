@@ -1,13 +1,25 @@
 package stepDefinations;
 
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.cucumber.listener.Reporter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebElement;
+
 import cucumber.api.Scenario;
 import cucumber.api.java.Before;
 import cucumber.api.java.After;
@@ -30,7 +42,7 @@ import org.junit.Assert;
 public class GenericSteps extends BaseTest{
 
 	//public AndroidDriver<MobileElement> driver;
-	WebDriver driver;
+	 WebDriver driver;
     public WebDriverWait wait;
    
     DesiredCapabilities caps = new DesiredCapabilities();
@@ -39,21 +51,23 @@ public class GenericSteps extends BaseTest{
     
 	@Before
 	public void setup(Scenario scenario) throws Exception {		
-		//System.out.println("Executing Before of Step Defination");
+		//System.out.println("Executing Before of Step Definition");
 		sName=scenario.getName();
 		
 	}
 	
-	
+	//------------------LAUNCHING APP---------------------
     @Given("^user launches the app in \"(.*?)\" device$")
     public void user_launches_the_app_in_device(String platform) throws Throwable {    	 
-        
-        driver = CapabilitiesGenerator.getInstance().launchApp(platform);
+       
+    	
+    	driver = CapabilitiesGenerator.getInstance().launchApp(platform);
         screenshot = new ScreenshotHandler(driver);
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
 	
     }
     
+  //------------------Entering Email---------------------
     @Given("^user enters email \"(.*?)\"$")
     public void user_enters_email(String arg1) throws Throwable {
     	wait = new WebDriverWait(driver, 40);
@@ -62,70 +76,119 @@ public class GenericSteps extends BaseTest{
     }
     
     
+  //------------------BUTTON CLICK---------------------
     @Given("^user clicks on button \"([^\"]*)\"$")
     public void user_clicks_on_button(String button_name) throws Throwable {
-    	wait.until(ExpectedConditions.visibilityOfElementLocated
+    	
+    	try 
+    		{	
+    		driver.findElement(ObjectRepository.getobjectLocator(button_name)).click();
+    		}
+    
+    	catch(Exception e) 
+    		{
+    	
+    			wait.until(ExpectedConditions.visibilityOfElementLocated
     			(ObjectRepository.getobjectLocator(button_name))).click();  
-    	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
+   		}
     	
+    	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));   	
     }
     
+  //------------------LABEL CLICK---------------------
     @Given("^user clicks on label \"([^\"]*)\"$")
-    public void label(String label_name) throws Throwable {    	 
+    public void label(String label_name) throws Throwable {  
+    	try
+    	{
+    		driver.findElement(ObjectRepository.getobjectLocator(label_name)).click();
+    	}
+    	catch(Exception e)
+    	{
     	wait.until(ExpectedConditions.visibilityOfElementLocated
-    			(ObjectRepository.getobjectLocator(label_name))).click();  
+    			(ObjectRepository.getobjectLocator(label_name))).click();     	
+    	}
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
-    	
     }
    
-    @Given("^user enters text \"([^\"]*)\" in textbox \"([^\"]*)\"$")
+    
+  //------------------Entering text in textbox ---------------------
+    @SuppressWarnings("rawtypes")
+	@Given("^user enters text \"([^\"]*)\" in textbox \"([^\"]*)\"$")
     public void user_enters_text_in_textbox(String text_value, String textbox_name) throws Throwable {
-    	wait.until(ExpectedConditions.visibilityOfElementLocated
-    			(ObjectRepository.getobjectLocator(textbox_name))).clear();
-    	wait.until(ExpectedConditions.visibilityOfElementLocated
-                (ObjectRepository.getobjectLocator(textbox_name))).sendKeys(text_value);
+    	
+    	try {
+    		if(textbox_name.contentEquals("AMOUNT_TO_BE_MOVED"))
+    		{
+    			 
+    			driver.findElement(ObjectRepository.getobjectLocator(textbox_name)).click();
+        		driver.findElement(ObjectRepository.getobjectLocator(textbox_name)).sendKeys(text_value);
+    			((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.SPACE));
+    		}
+    		else
+    		{
+    		driver.findElement(ObjectRepository.getobjectLocator(textbox_name)).clear();
+    		driver.findElement(ObjectRepository.getobjectLocator(textbox_name)).sendKeys(text_value);
+    		}
+    		
+    	}
+    	catch(Exception e) {
+    		wait.until(ExpectedConditions.visibilityOfElementLocated
+        			(ObjectRepository.getobjectLocator(textbox_name))).clear();
+        	wait.until(ExpectedConditions.visibilityOfElementLocated
+                    (ObjectRepository.getobjectLocator(textbox_name))).sendKeys(text_value);
+    		
+    	}
+   	
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
     }
    
     
-    @Given("^user selects option \"([^\"]*)\"  from the dropdown \"([^\"]*)\"$")
+  //------------------DROPDOWN SELCTION---------------------
+    @Given("^user selects option \"([^\"]*)\" from the dropdown \"([^\"]*)\"$")
     public void user_selects_option_from_the_dropdown(String dropdown_value, String dropdown_name) throws Throwable {
-    	 wait.until(ExpectedConditions.visibilityOfElementLocated
-    			 (ObjectRepository.getobjectLocator(dropdown_name))).click();
-         //Select Weekly Radio button
-         wait.until(ExpectedConditions.visibilityOfElementLocated
-        		 (ObjectRepository.getobjectLocator(dropdown_value))).click();
-         Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
-          
+    	
+    	try
+    	{
+    		driver.findElement(ObjectRepository.getobjectLocator(dropdown_name)).click();
+ 		Thread.sleep(2000);
+    	driver.findElement(ObjectRepository.getobjectLocator(dropdown_value)).click();
+ 	
+    	}
+    	catch(Exception e)
+    	{
+    	 
+      
+    	}
+    	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     }
     
-    
- /*   @Given("^user select radio button \"([^\"]*)\"$")
-    public void user_select_radio_button(String recipient) throws Throwable {
+  //------------------RADIO BUTTON selection---------------------
+    @Given("^user selects radio button \"([^\"]*)\"$")
+    public void user_selects_radio_button(String radiobutton_value) throws Throwable {
         
-    	driver.findElement(By.xpath("//android.widget.CheckBox[@text='" +"receipient']")).click();
+    	driver.findElement(ObjectRepository.getobjectLocator(radiobutton_value)).click();
     	
-    	utility.captureScreenShot(driver);
+    	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     	
     }
-    */
-
+    
+    
+  //------------------Field level Validation---------------------
     @Given("^user validates \"([^\"]*)\" field with expected value as \"([^\"]*)\"$")
     public void user_validates_field_with_expected_value_as(String actual, String expected) throws Throwable {
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
     	actual = actual+ "_value";
-    	String actual_argument = wait.until(ExpectedConditions.visibilityOfElementLocated
-   			 (ObjectRepository.getobjectLocator(actual))).getText();
-    
-    		Assert.assertEquals(expected, actual_argument);
+    	String actual_argument = driver.findElement(ObjectRepository.getobjectLocator(actual)).getText();
+   		Assert.assertEquals(expected, actual_argument);
     		
     }
    
-    
+  //------------------Swipe right---------------------
     @Given("^user swipes right to select \"([^\"]*)\"$")
     public void user_swipes_right_to_select(String account) throws Throwable {
     	
-    	 TouchAction touchAction = new TouchAction((PerformsTouchActions) driver);    //for touch actions on mobile devices
+    	 @SuppressWarnings("rawtypes")
+		TouchAction touchAction = new TouchAction((PerformsTouchActions) driver);    //for touch actions on mobile devices
     	if(account.equalsIgnoreCase("SAVINGS"))
 	{
     	//action.press(startx,starty).waitAction(1000).moveTo(startx,endy).release().perform();    	
@@ -139,23 +202,51 @@ public class GenericSteps extends BaseTest{
     }
     
     
+  //------------------Scroll down---------------------
+    @Given("^user scrolls down$")
+    public void user_scrolls_down() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+       
+    	@SuppressWarnings("rawtypes")
+		TouchAction touchAction = new TouchAction((PerformsTouchActions) driver);
+    	touchAction.longPress(PointOption.point(200, 550)).moveTo(PointOption.point(200, 200)).release().perform();
+    	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName)); 
+    }
+    
+    
+  //------------------Link CLICK---------------------
     @Given("^user clicks on link \"([^\"]*)\"$")
     public void user_clicks_on_link(String linkname) throws Throwable {
        
+    	try {
+    		driver.findElement(ObjectRepository.getobjectLocator(linkname)).click();
+    		
+    	}
+    	catch(Exception e)
+    	{
     	 wait.until(ExpectedConditions.visibilityOfElementLocated
     			 (ObjectRepository.getobjectLocator(linkname))).click();
-    	 Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
-    	
+	
+    	}
+    	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     }
     
+  //------------------selecting Checkbox---------------------
     @Given("^user selects checkbox \"([^\"]*)\"$")
     public void user_selects_checkbox(String checkbox_name) throws Throwable {
+    	try
+    	{
+    		driver.findElement(ObjectRepository.getobjectLocator(checkbox_name)).click();
+    	}
+    	catch (Exception e)
+    	{
     	wait.until(ExpectedConditions.visibilityOfElementLocated
-   			 (ObjectRepository.getobjectLocator(checkbox_name))).click();
-    	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
-        
+   			 (ObjectRepository.getobjectLocator(checkbox_name))).click();       
+    	}
+    	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName)); 
     }
 
+  //------------------WAIT METHOD---------------------
     @Given("^user waits for \"(.*?)\" seconds$")
     public void user_waits_for_seconds(long arg1) throws Throwable 
     {
@@ -164,25 +255,74 @@ public class GenericSteps extends BaseTest{
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
     } 
     
-    
-    
-    @Given("^user enters \"([^\"]*)\" in textbox with index \"([^\"]*)\"$")
-    public void user_enters_in_textbox_with_index(String text, int index) throws Throwable {
+  //------------------INDEX METHOD FOR TEXTBOX ---------------------
+    @Given("^user enters \"([^\"]*)\" in textbox at index \"([^\"]*)\"$")
+    public void user_enters_in_textbox_at_index(String text, int index) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
     	
     	List<MobileElement> elements = driver.findElements(By.className("android.widget.EditText"));
         System.out.println("Number of elements:" +elements.size());
 
         for (int i=0; i<elements.size();i++)
+        	
         {
-          System.out.println("button text:" + elements.get(i).getAttribute("text"));
+          System.out.println("textbox text:" + elements.get(i).getAttribute("text"));
           elements.get(index).sendKeys(text);
           elements.get(index).click();
-         
-        }
        
+        }
+        Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     }
  
+  //------------------INDEX METHOD FOR BUTTON--------------------
+    @Given("^user clicks on button at index \"([^\"]*)\"$")
+    public void user_clicks_on_button_at_index(int index) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+    	
+    try
+    {
+    	List<MobileElement> elements = driver.findElements(By.className("android.widget.Button"));
+   
+        System.out.println("Number of elements:" +elements.size());
+
+        for (int i=0; i<elements.size();i++)
+        {
+        System.out.println("button text:" + elements.get(i).getAttribute("text"));
+        //  elements.get(index).sendKeys(text);
+          elements.get(index).click();
+      
+        }
+    }
+    catch(Exception e)
+    {
+    	
+       
+    }
+    Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
+    }
+    
+    
+  //------------------INDEX METHOD FOR CHECKBOX--------------------
+    @Given("^user selects checkbox at index \"([^\"]*)\"$")
+    public void user_selects_checkbox_at_index(int index) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+    	
+    	List<MobileElement> elements = driver.findElements(By.className("android.widget.CheckBox"));
+        System.out.println("Number of elements:" +elements.size());
+
+        for (int i=0; i<elements.size();i++)
+        {
+        System.out.println("checkbox text:" + elements.get(i).getAttribute("text"));
+        //  elements.get(index).sendKeys(text);       
+          System.out.println("IsSelected- "+elements.get(index).isSelected());
+          elements.get(index).click();
+        }
+        Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
+    }
+ 
+   
+   
+  //------------------SWITCHING APPS--------------------
     @SuppressWarnings({ "unchecked", "rawtypes" })
     
     @Given("^user switches to \"([^\"]*)\" app to get \"([^\"]*)\" for account with email \"([^\"]*)\"  and password \"([^\"]*)\"$")
@@ -260,13 +400,211 @@ public class GenericSteps extends BaseTest{
     }
     
     
-  /*
+  //------------------CALENDAR SELCTIONS --------------------
+
+    	@Given("^user selects \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" from calendar$")
+    	public void user_selects_from_calendar(String month, int day, int year) throws Throwable {
+    	    // Write code here that turns the phrase above into concrete actions
+  		
+    		Calendar mCalendar = Calendar.getInstance();    
+        	String current_month = mCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
+        	System.out.println("MONTH VALUE IS RETREIVED AS --- " + current_month);
+     	
+        	
+        	int current_day = mCalendar.get(Calendar.DAY_OF_MONTH);
+        	System.out.println("Day VALUE IS RETREIVED AS --- " + current_day);
+        	
+        	int current_year = mCalendar.get(Calendar.YEAR);
+        	System.out.println("Year VALUE IS RETREIVED AS --- " + current_year);
+        
+    			
+    //	System.out.println("CURRENT DATE- " +driver.findElement(By.xpath("//android.view.View[contains(@text, 'Oct')]")).getText());	
+ 
+    		TouchAction touchAction = new TouchAction((PerformsTouchActions) driver);
+    		if(year>current_year)
+    		{
+    			do
+    			{   
+    				
+    				WebElement current_year_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+current_year +"']"));
+    				int cyear_x = current_year_val.getLocation().getX();
+    	    		int cyear_y = current_year_val.getLocation().getY();
+				
+    				int temp=current_year+1;
+    				WebElement current_year_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+temp+"']"));
+    				int year_x = current_year_oneahead.getLocation().getX();
+            		int year_y = current_year_oneahead.getLocation().getY();
+    				touchAction.longPress(PointOption.point(year_x, year_y)).moveTo(PointOption.point(cyear_x, cyear_y)).release().perform();
+    				++current_year;
+    				System.out.println("Current Year is :" + current_year);
+    				
+    			}while (year>current_year);
+    		}
+    		else
+    		{
+    			
+    		}
+    		
+    		// Doing Touch action for Months
+    		List<String> months = Arrays.asList("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+    		int indexOfCurrentMonth = 0; int indexofinputMonth =0;
+    		
+    		System.out.println("Number of elements:" +months.size());
+
+            for (int i=0; i<months.size();i++)
+            {
+            if(months.get(i).contentEquals(current_month))
+            {
+            	indexOfCurrentMonth=i;
+            }  
+            
+            else if (months.get(i).contentEquals(month))          
+            {
+            	indexofinputMonth=i;
+            }
+     
+            }
+            System.out.println("Index of Current Month "+ indexOfCurrentMonth);
+            System.out.println("Index of Entered Month "+ indexofinputMonth);
+         
+            if(indexofinputMonth>indexOfCurrentMonth)
+    		{
+    			do
+    			{
+    				
+    				WebElement current_month_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+current_month +"']"));
+    				int cmonth_x = current_month_val.getLocation().getX();
+    	    		int cmonth_y = current_month_val.getLocation().getY();
+				
+    				int temp=indexOfCurrentMonth+1;
+    				
+    				
+    				WebElement current_month_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+months.get(temp)+"']"));
+    				int month_x = current_month_oneahead.getLocation().getX();
+            		int month_y = current_month_oneahead.getLocation().getY();
+    				touchAction.longPress(PointOption.point(month_x, month_y)).moveTo(PointOption.point(cmonth_x, cmonth_y)).release().perform();
+    				++indexOfCurrentMonth;
+    				System.out.println("Current Month index is :" + indexOfCurrentMonth);
+    				
+    			}while (indexofinputMonth>indexOfCurrentMonth);
+    		}
+            
+            
+    		else if (indexofinputMonth<indexOfCurrentMonth)
+    		{
+    			do
+    			{
+    				WebElement current_month_val = driver.findElement(By.xpath("//android.widget.Button[@text ='"+current_month +"']"));
+    				int cmonth_x = current_month_val.getLocation().getX();
+    	    		int cmonth_y = current_month_val.getLocation().getY();
+				
+    				int temp=indexOfCurrentMonth-1;
+    				
+    				
+    				WebElement current_month_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+months.get(temp)+"']"));
+    				int month_x = current_month_oneahead.getLocation().getX();
+            		int month_y = current_month_oneahead.getLocation().getY();
+    				touchAction.longPress(PointOption.point(month_x, month_y)).moveTo(PointOption.point(cmonth_x, cmonth_y)).release().perform();
+    				--indexOfCurrentMonth;
+    				System.out.println("Current Month index is :" + indexOfCurrentMonth);
+    				
+    			}while (indexofinputMonth<indexOfCurrentMonth);
+    		}
+    		
+    		//Touch action for Day 
+            if(day>current_day)
+    		{
+    			do
+    			{
+    				WebElement current_day_val, current_day_oneahead;
+    				int cday_x, cday_y, day_x, day_y, temp;
+    				
+    				if(current_day<10)
+    				{
+    				 current_day_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+0+current_day +"']"));
+    				 cday_x = current_day_val.getLocation().getX();
+    	    		 cday_y = current_day_val.getLocation().getY();
+    				}
+    				else
+    				{
+    					current_day_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+current_day +"']"));
+       				 cday_x = current_day_val.getLocation().getX();
+       	    		 cday_y = current_day_val.getLocation().getY();
+    				}
+				
+    				temp=current_day+1;
+    				if(temp<10)
+    				{
+    					current_day_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+0+temp+"']"));
+       				 day_x = current_day_oneahead.getLocation().getX();
+               		 day_y = current_day_oneahead.getLocation().getY();
+    				}
+    				else
+    				{
+    				
+    				 current_day_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+temp+"']"));
+    				 day_x = current_day_oneahead.getLocation().getX();
+            		 day_y = current_day_oneahead.getLocation().getY();
+    				}
+    				touchAction.longPress(PointOption.point(day_x, day_y)).moveTo(PointOption.point(cday_x, cday_y)).release().perform();
+    				++current_day;
+    				System.out.println("Current Day is :" + current_day);
+    				
+    			}while (day>current_day);
+    		}
+    		else if(day<current_day)
+    		{
+    			
+    			do
+    			{	
+    				WebElement current_day_val, current_day_oneahead;
+    				int cday_x, cday_y, day_x, day_y, temp;
+    				
+    				if(current_day<10)
+    				{
+    				 current_day_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+0+current_day +"']"));
+    				 cday_x = current_day_val.getLocation().getX();
+    	    		 cday_y = current_day_val.getLocation().getY();
+    				}
+    				else
+    				{
+    					current_day_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+current_day +"']"));
+       				 cday_x = current_day_val.getLocation().getX();
+       	    		 cday_y = current_day_val.getLocation().getY();
+    				}
+				
+    				temp=current_day-1;
+    				if(temp<10)
+    				{
+    					current_day_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+0+temp+"']"));
+       				 day_x = current_day_oneahead.getLocation().getX();
+               		 day_y = current_day_oneahead.getLocation().getY();
+    				}
+    				else
+    				{
+    				
+    				 current_day_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+temp+"']"));
+    				 day_x = current_day_oneahead.getLocation().getX();
+            		 day_y = current_day_oneahead.getLocation().getY();
+    				}
+    				touchAction.longPress(PointOption.point(day_x, day_y)).moveTo(PointOption.point(cday_x, cday_y)).release().perform();
+    				--current_day;
+    				//System.out.println("Current Day is :" + current_day);
+    			}while (day<current_day);
+    			
+    		}
+    	
+        	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName)); 	
+    		
+    	}
+    	
+
  @After()
 	public void tearDown() throws Exception {		
 		System.out.println("Executing After of Step Defination");
         Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
 		driver.quit();
-	}*/
+	}
 	
 }	
 
