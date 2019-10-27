@@ -30,7 +30,7 @@ And user waits for "10" seconds
   
   Examples: 
     |   Platform    |   Email                           |   Username     |   Password    |  	Invitees						| 
-    |   Android     |   manoj.chauhan@prodigylabs.net   |   mchauhan9189 |   Qwerty123!! | 		 usrwereser@yopmail.com		|
+    |   Android     |   manoj.chauhan@prodigylabs.net   |   mchauhan9189 |   Qwerty123!! | 		 usrw23ser@yopmail.com		|
 	
 	
 	@SmokePack @TC002_Internal_Transfer_DDA_To_SAV
@@ -66,7 +66,7 @@ And user waits for "5" seconds
   And user clicks on button "Done"
   
   Examples: 
-	|	Platform	|	Email													|	Username				|	Password		|	 	Amount		|	
+	|	Platform	|	Email													|	Username				|	Password		|	 	Amount	|	
 	|	Android		|	manoj.chauhan@prodigylabs.net	|	mchauhan9189		|	Qwerty123!!	|		1.00		|
 	
 	
