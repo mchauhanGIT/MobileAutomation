@@ -18,8 +18,8 @@ And user waits for "5" seconds
  And user waits for "3" seconds
 
   Examples: 
-	|	Platform	|	Email										|	Username			|	Password		|		
-	|	Android		|	Meedoct091@yopmail.com	|	Meedoct091		|	Password-1	|	
+	|	Platform	|	Email													|	Username				|	Password		|		
+	|	Android		|	manoj.chauhan@prodigylabs.net	|	mchauhan9189		|	Qwerty123!!	|	
 	
 
 @RegressionPack @TC002

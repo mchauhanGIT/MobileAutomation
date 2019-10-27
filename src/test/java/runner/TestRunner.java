@@ -16,7 +16,7 @@ import cucumber.api.junit.Cucumber;
  features = "src/test/java/features/New App features/testApp.feature",
  glue= {"stepDefinations"},
  plugin = {"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/TestAutomationReport.html"},
- tags = {"@TC001"},
+ tags = {"@RegressionPack"},
  monochrome = true
  )
  

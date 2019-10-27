@@ -67,7 +67,7 @@ public class GenericSteps extends BaseTest{
 	
     }
     
-  //------------------Entering Email---------------------
+  //------------------ENTERING EMAIL---------------------
     @Given("^user enters email \"(.*?)\"$")
     public void user_enters_email(String arg1) throws Throwable {
     	wait = new WebDriverWait(driver, 40);
@@ -80,9 +80,12 @@ public class GenericSteps extends BaseTest{
     @Given("^user clicks on button \"([^\"]*)\"$")
     public void user_clicks_on_button(String button_name) throws Throwable {
     	
+    	
+    			
     	try 
     		{	
     		driver.findElement(ObjectRepository.getobjectLocator(button_name)).click();
+    	 
     		}
     
     	catch(Exception e) 
@@ -91,6 +94,7 @@ public class GenericSteps extends BaseTest{
     			wait.until(ExpectedConditions.visibilityOfElementLocated
     			(ObjectRepository.getobjectLocator(button_name))).click();  
    		}
+    	
     	
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));   	
     }
@@ -111,13 +115,13 @@ public class GenericSteps extends BaseTest{
     }
    
     
-  //------------------Entering text in textbox ---------------------
+  //------------------ENTERING TEXT IN TEXTBOX ---------------------
     @SuppressWarnings("rawtypes")
 	@Given("^user enters text \"([^\"]*)\" in textbox \"([^\"]*)\"$")
     public void user_enters_text_in_textbox(String text_value, String textbox_name) throws Throwable {
     	
     	try {
-    		if(textbox_name.contentEquals("AMOUNT_TO_BE_MOVED"))
+    		if(textbox_name.contentEquals("AMOUNT_TO_BE_MOVED") || textbox_name.contentEquals("AMOUNT_TO_BE_SENT"))
     		{
     			 
     			driver.findElement(ObjectRepository.getobjectLocator(textbox_name)).click();
@@ -162,7 +166,7 @@ public class GenericSteps extends BaseTest{
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     }
     
-  //------------------RADIO BUTTON selection---------------------
+  //------------------RADIO BUTTON SELECTION---------------------
     @Given("^user selects radio button \"([^\"]*)\"$")
     public void user_selects_radio_button(String radiobutton_value) throws Throwable {
         
@@ -173,17 +177,17 @@ public class GenericSteps extends BaseTest{
     }
     
     
-  //------------------Field level Validation---------------------
+  //------------------FIELD LEVEL VALIDATION---------------------
     @Given("^user validates \"([^\"]*)\" field with expected value as \"([^\"]*)\"$")
     public void user_validates_field_with_expected_value_as(String actual, String expected) throws Throwable {
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
-    	actual = actual+ "_value";
+    //	actual = actual+ "_value";
     	String actual_argument = driver.findElement(ObjectRepository.getobjectLocator(actual)).getText();
    		Assert.assertEquals(expected, actual_argument);
     		
     }
    
-  //------------------Swipe right---------------------
+  //------------------SWIPE RIGHT---------------------
     @Given("^user swipes right to select \"([^\"]*)\"$")
     public void user_swipes_right_to_select(String account) throws Throwable {
     	
@@ -202,7 +206,7 @@ public class GenericSteps extends BaseTest{
     }
     
     
-  //------------------Scroll down---------------------
+  //------------------SCROLL DOWN---------------------
     @Given("^user scrolls down$")
     public void user_scrolls_down() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
@@ -214,7 +218,7 @@ public class GenericSteps extends BaseTest{
     }
     
     
-  //------------------Link CLICK---------------------
+  //------------------LINK CLICK---------------------
     @Given("^user clicks on link \"([^\"]*)\"$")
     public void user_clicks_on_link(String linkname) throws Throwable {
        
@@ -231,7 +235,7 @@ public class GenericSteps extends BaseTest{
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     }
     
-  //------------------selecting Checkbox---------------------
+  //------------------SELECTING CHECKBOX---------------------
     @Given("^user selects checkbox \"([^\"]*)\"$")
     public void user_selects_checkbox(String checkbox_name) throws Throwable {
     	try
@@ -303,7 +307,8 @@ public class GenericSteps extends BaseTest{
     
     
   //------------------INDEX METHOD FOR CHECKBOX--------------------
-    @Given("^user selects checkbox at index \"([^\"]*)\"$")
+    @SuppressWarnings("unlikely-arg-type")
+	@Given("^user selects checkbox at index \"([^\"]*)\"$")
     public void user_selects_checkbox_at_index(int index) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
     	
@@ -313,13 +318,38 @@ public class GenericSteps extends BaseTest{
         for (int i=0; i<elements.size();i++)
         {
         System.out.println("checkbox text:" + elements.get(i).getAttribute("text"));
+        
+       if(elements.get(i).equals(index))
+    	   break;
+       
+        
+        }
+        elements.get(index).click();
+        Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
+    }
+    
+    
+    
+ 
+    
+  //------------------INDEX METHOD FOR RAFIOBUTTON--------------------
+    @Given("^user selects radiobutton at index \"([^\"]*)\"$")
+    public void user_selects_radiobutton_at_index(int index) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+    	
+    	List<MobileElement> elements = driver.findElements(By.className("android.widget.RadioButton"));
+        System.out.println("Number of elements:" +elements.size());
+
+        for (int i=0; i<elements.size();i++)
+        {
+        System.out.println("Radiobox text:" + elements.get(i).getAttribute("text"));
         //  elements.get(index).sendKeys(text);       
-          System.out.println("IsSelected- "+elements.get(index).isSelected());
+          
           elements.get(index).click();
         }
         Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     }
- 
+    
    
    
   //------------------SWITCHING APPS--------------------
@@ -398,6 +428,16 @@ public class GenericSteps extends BaseTest{
         ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);
         Thread.sleep(5000);
     }
+    
+    
+  //------------------Switching to Message App to get OTP --------------------
+    
+    @Given("^user switches to app \"([^\"]*)\" to get \"([^\"]*)\"$")
+    public void user_switches_to_app_to_get(String arg1, String arg2) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        
+    }
+    
     
     
   //------------------CALENDAR SELCTIONS --------------------
@@ -597,6 +637,53 @@ public class GenericSteps extends BaseTest{
         	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName)); 	
     		
     	}
+    	
+    	
+    	//---------------------SELECTING FROM LIST- Android specific-----
+    	@Given("^user selects option \"([^\"]*)\" from the list$")
+    	public void user_selects_option_from_the_list(String list_value) throws Throwable {
+    	    // Write code here that turns the phrase above into concrete actions
+    		System.out.println("List name" + list_value);
+    	    driver.findElement(By.xpath("//android.view.View[@text='"+list_value+"']")).click();
+    	}
+    	
+    	
+    	//------------------INDEX METHOD FOR LABEL --------------------
+
+    	@Given("^user select label \"([^\"]*)\" at index \"([^\"]*)\"$")
+    	public void user_select_label_at_index(String label_name, int index) throws Throwable {
+    		// Write code here that turns the phrase above into concrete actions
+    		
+    		List<MobileElement> elements = driver.findElements(By.xpath("//*[@text='"+label_name+ "']"));
+            System.out.println("Number of elements:" +elements.size());
+
+            for (int i=0; i<elements.size();i++)
+            {
+            System.out.println("checkbox text:" + elements.get(i).getAttribute("text"));
+            
+           if(elements.get(i).equals(index))
+        	   break;
+           
+            
+            }
+            elements.get(index).click();
+            Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
+        
+    		
+    	}
+    	
+    	
+
+    	@Given("^user presses device \"([^\"]*)\" button$")
+    	public void user_presses_device_button(String button_name) throws Throwable {
+    	    // Write code here that turns the phrase above into concrete actions
+    	  
+    		((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.BACK));
+    		
+    	}
+
+    	
+    	
     	
 
  @After()

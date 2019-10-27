@@ -25,9 +25,8 @@ And user waits for "5" seconds
   And user waits for "5" seconds
    And user scrolls down
   And user enters text "<Amount>" in textbox "AMOUNT_TO_BE_MOVED"
-   And user scrolls down
-   
-  And user clicks on button "SCHEDULE"
+   And user scrolls down 
+  #And user clicks on button "SCHEDULE"
  And user enters text "Testing Internal transfer Automation" in textbox "NOTE"
  And user clicks on button "Confirm_details" 
  And user waits for "3" seconds
