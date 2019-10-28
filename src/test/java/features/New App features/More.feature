@@ -545,7 +545,7 @@ And user waits for "10" seconds
   And user scrolls down
   And user scrolls down
   And user scrolls down
-  And user clicks on button "Contact_US"
+  And user clicks on button "Contact_Us"
   And user waits for "3" seconds
   And user clicks on button "Back"
   And user waits for "10" seconds

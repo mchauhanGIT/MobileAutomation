@@ -421,8 +421,8 @@ public class GenericSteps extends BaseTest{
     	    
         Thread.sleep(2000);
         
-         //Re launch calculator App
-        activity = new Activity(ObjectRepository.getString("global.capability.meedAppPackage"), ObjectRepository.getString("global.capability.meedAppActivity"));
+         //Re launch Meed App
+        activity = new Activity(ObjectRepository.getString("global.capability.NewMeedAppPackage"), ObjectRepository.getString("global.capability.NewMeedAppActivity"));
         activity.setStopApp(false);
         
         ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);
@@ -433,8 +433,34 @@ public class GenericSteps extends BaseTest{
   //------------------Switching to Message App to get OTP --------------------
     
     @Given("^user switches to app \"([^\"]*)\" to get \"([^\"]*)\"$")
-    public void user_switches_to_app_to_get(String arg1, String arg2) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    public void user_switches_to_app_to_get(String app_name, String app_data) throws Throwable {
+    	
+    	
+    	Activity activity; 
+    	
+    	
+    	switch(app_name)
+		{
+			case "message":
+				activity = new Activity(ObjectRepository.getString("global.capability.settingsAppPackage"), ObjectRepository.getString("global.capability.settingsAppActivity"));
+		        activity.setStopApp(false);
+		        ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);
+		        driver.findElement(By.className("android.widget.LinearLayout")).click();
+				break;
+				
+				
+			case"chrome":
+				break;
+    	
+		}
+    	
+    	
+   
+    	 activity = new Activity(ObjectRepository.getString("global.capability.NewMeedAppPackage"), ObjectRepository.getString("global.capability.NewMeedAppActivity"));
+         activity.setStopApp(false);
+         
+         ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);
+         Thread.sleep(5000);
         
     }
     
@@ -674,16 +700,27 @@ public class GenericSteps extends BaseTest{
     	
     	
 
-    	@Given("^user presses device \"([^\"]*)\" button$")
+    	@SuppressWarnings("rawtypes")
+		@Given("^user presses device \"([^\"]*)\" button$")
     	public void user_presses_device_button(String button_name) throws Throwable {
     	    // Write code here that turns the phrase above into concrete actions
     	  
-    		((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.BACK));
-    		
+    		switch(button_name)
+    		{
+    			case "BACK":
+    				((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.BACK));
+    				break;
+    			case "ENTER":
+    				((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.ENTER));
+    				break;
+    			case "CAMERA":
+    				((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.CAMERA));
+    				break;
+    			
+    		}
+ 		
     	}
 
-    	
-    	
     	
 
  @After()
