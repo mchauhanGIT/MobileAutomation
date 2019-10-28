@@ -7,7 +7,7 @@ Feature: Internal P2P Transfer new app
 Scenario Outline: Verify Meed customer is able contact us in Meed app 
 Given user launches the app in "<Platform>" device
 
-And user waits for "10" seconds
+And user waits for "25" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -19,6 +19,7 @@ And user waits for "10" seconds
  And user waits for "5" seconds
  And user clicks on button "More"
   And user waits for "2" seconds
+  And user scrolls down
   And user scrolls down
   And user scrolls down
   And user scrolls down

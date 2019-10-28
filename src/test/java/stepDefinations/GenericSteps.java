@@ -91,8 +91,9 @@ public class GenericSteps extends BaseTest{
     	catch(Exception e) 
     		{
     	
-    			wait.until(ExpectedConditions.visibilityOfElementLocated
-    			(ObjectRepository.getobjectLocator(button_name))).click();  
+    		String button_value = button_name.split("_")[0];
+    		driver.findElement(By.xpath("//*[contains(@text, '"+button_value+"')]")).click();; 
+    		System.out.println("Inside Catch , Success");	 
    		}
     	
     	
