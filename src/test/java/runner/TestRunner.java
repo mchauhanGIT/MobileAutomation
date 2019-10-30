@@ -26,7 +26,6 @@ public class TestRunner {
 	public static void setup()
 	{	
 	Reporter.loadXMLConfig(new File("src/main/resources/extent-config.xml"));
-	//Reporter.setSystemInfo("Test User", System.getProperty("user.name"));
 	Reporter.setSystemInfo("User Name", "Manoj");
 	Reporter.setSystemInfo("Application Name", "Meed Mobile App ");
 	Reporter.setSystemInfo("Operating System Type", System.getProperty("os.name").toString());

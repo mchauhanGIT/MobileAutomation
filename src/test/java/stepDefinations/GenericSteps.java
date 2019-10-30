@@ -109,8 +109,9 @@ public class GenericSteps extends BaseTest{
     	}
     	catch(Exception e)
     	{
-    	wait.until(ExpectedConditions.visibilityOfElementLocated
-    			(ObjectRepository.getobjectLocator(label_name))).click();     	
+    		String label_value = label_name.split("_")[0];
+    		driver.findElement(By.xpath("//*[contains(@text, '"+label_value+"')]")).click();; 
+    		System.out.println("Inside Catch , Success");  	
     	}
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
     }
@@ -333,7 +334,7 @@ public class GenericSteps extends BaseTest{
     
  
     
-  //------------------INDEX METHOD FOR RAFIOBUTTON--------------------
+  //------------------INDEX METHOD FOR RADIOBUTTON--------------------
     @Given("^user selects radiobutton at index \"([^\"]*)\"$")
     public void user_selects_radiobutton_at_index(int index) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
@@ -361,6 +362,10 @@ public class GenericSteps extends BaseTest{
        
     	Thread.sleep(2000);
     	Activity activity; 
+    	
+    	String otp_value = null;
+    	
+    	
     	switch(app_name)
 		{
 			case "chrome":
@@ -387,27 +392,48 @@ public class GenericSteps extends BaseTest{
 			   {
     				System.out.print("Inside catch block");
     				
-    					driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']")).sendKeys("https://"+domain);
+    					driver.findElement(By.xpath("//android.widget.EditText[@resource-id='com.android.chrome:id/url_bar']")).sendKeys("https://m.yopmail.come/");
     				((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.ENTER));
     				Thread.sleep(2000);
     				
 			   }
 		 
-			   finally
-			   {
-			 
-		/*	   driver.findElement(By.xpath("//android.widget.EditText[@resource-id='identifierId']")).sendKeys(email_id);
-		        driver.findElement(By.xpath("//android.widget.Button[@text='Next']")).click();
-		        Thread.sleep(2000);
-		        driver.findElement(By.className("android.widget.EditText")).sendKeys(password);
-		        driver.findElement(By.xpath("//android.widget.Button[@text='Next']")).click();
-		        Thread.sleep(5000);
-			*/ 
-			   }
-		   	}
+		   }
+		  
 		   else if(domain.equalsIgnoreCase("yopmail.com"))  
 		   {
-			   
+			   activity = new Activity(ObjectRepository.getString("global.capability.chromeAppPackage"), ObjectRepository.getString("global.capability.chromeAppActivity"));
+		        activity.setStopApp(false);
+		        ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);	
+		        domain = email_id.split("@")[1];
+		        Thread.sleep(1000);
+			       driver.findElement(By.xpath("//android.widget.ImageButton[@resource-id='com.android.chrome:id/menu_button']")).click(); 
+			       driver.findElement(By.xpath("//android.widget.TextView[@text='New tab']")).click();
+		        Thread.sleep(1000);
+		        driver.findElement(By.className("android.widget.EditText")).clear();
+		        driver.findElement(By.className("android.widget.EditText")).sendKeys(domain);			        
+			       ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.ENTER));
+		        
+			        
+			       Thread.sleep(1000);
+			       driver.findElement(By.xpath("//android.widget.EditText[@resource-id='login']")).clear();
+			       driver.findElement(By.xpath("//android.widget.EditText[@resource-id='login']")).sendKeys(email_id);  
+			       driver.findElement(By.xpath("//android.widget.Button[@index='0']")).click();
+			       Thread.sleep(2000);
+			       
+			
+			       driver.findElement(By.xpath("//android.view.View[contains(@text,'Meed')]")).click();
+			       Thread.sleep(1000);
+			   String otptext=    driver.findElement(By.xpath("//android.view.View[contains(@text, 'Welcome to Meed ')]")).getText();
+			   		
+			       System.out.println("OTP TEXT is"+otptext);
+			       String otp = domain = otptext.split(":")[1];
+			       String[] temp =  otp.split(" ");
+			       otp_value= temp[1];
+			       
+			     //  System.out.println("OTP IS: " + otp_value[1]);
+			       
+		        
 		   }
 		break;
 				
@@ -425,9 +451,57 @@ public class GenericSteps extends BaseTest{
          //Re launch Meed App
         activity = new Activity(ObjectRepository.getString("global.capability.NewMeedAppPackage"), ObjectRepository.getString("global.capability.NewMeedAppActivity"));
         activity.setStopApp(false);
-        
+        int j=3;
         ((AndroidDriver<MobileElement>) this.driver).startActivity(activity);
-        Thread.sleep(5000);
+      System.out.println("OTP is "+otp_value);
+     
+  
+     for(int i=0;i<otp_value.length();i++)
+     {
+    	String temp = otp_value.substring(i, i+1);
+    // 	System.out.println("temp " +temp);
+ 
+   
+   driver.findElement(By.xpath("//android.view.View[@index='"+j+"']")).click();
+   switch(temp)
+   {
+   case("1"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_1));
+   break;
+   
+   case("2"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_2));
+   break;
+   
+   case("3"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_3));
+   break;
+   
+   case("4"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_4));
+   break;
+   
+   case("5"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_5));
+   break;
+   
+   case("6"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_6));
+   break;
+   
+   case("7"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_7));
+   break;
+   
+   case("8"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_8));
+   break;
+   
+   case("9"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_9));
+   break;
+   
+   case("0"): ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.DIGIT_0));
+   break;
+   
+   
+   }
+   
+       ++j;
+     }  
+      Thread.sleep(5000);  	
+        
     }
     
     
