@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.cucumber.listener.Reporter;
+import com.gargoylesoftware.htmlunit.javascript.host.Element;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
@@ -111,7 +113,7 @@ public class GenericSteps extends BaseTest{
     	{
     		String label_value = label_name.split("_")[0];
     		driver.findElement(By.xpath("//*[contains(@text, '"+label_value+"')]")).click();; 
-    		System.out.println("Inside Catch , Success");  	
+    		System.out.println("Inside Catch , Success");	
     	}
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
     }
@@ -162,7 +164,13 @@ public class GenericSteps extends BaseTest{
     	}
     	catch(Exception e)
     	{
-    	 
+    		/*String dd_value = dropdown_name.split("_")[0];
+    		driver.findElement(By.xpath("//*[contains(@text, '"+dd_value+"')]")).click();
+    		
+    		String dnd_value = dropdown_value.split("_")[0];
+    		driver.findElement(By.xpath("//*[contains(@text, '"+dnd_value+"')]")).click();
+    		
+    		System.out.println("Inside Catch , Success");	*/
       
     	}
     	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
@@ -273,10 +281,17 @@ public class GenericSteps extends BaseTest{
         	
         {
           System.out.println("textbox text:" + elements.get(i).getAttribute("text"));
-          elements.get(index).sendKeys(text);
-          elements.get(index).click();
+                    
+          if(elements.get(i).equals(index))
+       	   break;
        
         }
+        
+        elements.get(index).sendKeys(text);
+        elements.get(index).click();
+        
+        ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.SPACE));  
+
         Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     }
  
@@ -295,9 +310,11 @@ public class GenericSteps extends BaseTest{
         {
         System.out.println("button text:" + elements.get(i).getAttribute("text"));
         //  elements.get(index).sendKeys(text);
-          elements.get(index).click();
+        if(elements.get(i).equals(index))
+     	   break;
       
         }
+        elements.get(index).click();
     }
     catch(Exception e)
     {
@@ -346,12 +363,36 @@ public class GenericSteps extends BaseTest{
         {
         System.out.println("Radiobox text:" + elements.get(i).getAttribute("text"));
         //  elements.get(index).sendKeys(text);       
+        if(elements.get(i).equals(index))
+     	   break;
           
-          elements.get(index).click();
         }
+        
+        elements.get(index).click();
         Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
     }
     
+    
+    //------------------INDEX METHOD FOR DROPDOWN--------------------
+    @Given("^user selects dropdown at index \"([^\"]*)\"$")
+    public void user_selects_dropdown_at_index(int index) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+    	
+    	List<MobileElement> elements = driver.findElements(By.xpath("//android.widget.Image[@text='custom arrow-down-btn']"));
+        System.out.println("Number of elements:" +elements.size());
+
+        for (int i=0; i<elements.size();i++)
+        {
+        //System.out.println("Dropdown text:" + elements.get(i).getAttribute("text"));
+        //  elements.get(index).sendKeys(text);  
+        	
+        	if(elements.get(i).equals(index))
+          	   break;
+
+        }
+        elements.get(index).click();
+        Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));
+    }
    
    
   //------------------SWITCHING APPS--------------------
@@ -802,7 +843,7 @@ public class GenericSteps extends BaseTest{
 	public void tearDown() throws Exception {		
 		System.out.println("Executing After of Step Defination");
         Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName));  
-		driver.quit();
+		//driver.quit();
 	}
 	
 }	

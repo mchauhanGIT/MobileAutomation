@@ -21,19 +21,44 @@ And user waits for "15" seconds
  And user clicks on button "No_one_invited_me"
  And user waits for "5" seconds
  And user clicks on button "USA"
- #WAIT FOR USER TO ENTER OTP FROM EMAIL
+
  And user switches to "chrome" app to get "OTP" for account with email "<Email>"  and password ""
  
 
- And user waits for "30" seconds
+ And user waits for "3" seconds
  And user enters text "<Username>" in textbox "Username"
  And user enters text "<Password>" in textbox "Password"
  And user enters text "<Password>" in textbox "Repeat_password"
  And user clicks on button "Continue"
  And user waits for "3" seconds
- And user selects option "" from the dropdown "SECURITY_QUESTION_1"
  
+ #Security Questions
  
+ And user scrolls down
+ 
+ And user selects dropdown at index "0"
+ And user clicks on label "Favorite_food?" 
+ And user waits for "2" seconds
+ And user enters "Indian" in textbox at index "1"
+
+ And user scrolls down
+ 
+ And user selects dropdown at index "1"
+ And user clicks on label "Favorite_vacation_location?"
+ And user waits for "2" seconds 
+ And user enters "London" in textbox at index "3"
+ 
+ And user waits for "2" seconds  
+ And user selects dropdown at index "2"
+ And user waits for "2" seconds 
+ And user clicks on label "City_where_you_were_born?"
+ # And user waits for "2" seconds
+ And user enters "delhi" in textbox at index "5"
+ 
+ And user waits for "2" seconds
+ And user clicks on button "Continue"
+  And user waits for "2" seconds
+  And user clicks on button "I'm_good_to_go"
 
 
   Examples: 
