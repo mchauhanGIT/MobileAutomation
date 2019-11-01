@@ -81,21 +81,22 @@ public class GenericSteps extends BaseTest{
   //------------------BUTTON CLICK---------------------
     @Given("^user clicks on button \"([^\"]*)\"$")
     public void user_clicks_on_button(String button_name) throws Throwable {
-    	
-    	
+	
     			
     	try 
     		{	
-    		driver.findElement(ObjectRepository.getobjectLocator(button_name)).click();
-    	 
+    		
+    		String button_value = button_name.split("_")[0];
+    		Thread.sleep(1000);
+    		driver.findElement(By.xpath("//*[contains(@text, '"+button_value+"')]")).click();; 
+ 	 
     		}
     
     	catch(Exception e) 
     		{
     	
-    		String button_value = button_name.split("_")[0];
-    		driver.findElement(By.xpath("//*[contains(@text, '"+button_value+"')]")).click();; 
-    		System.out.println("Inside Catch , Success");	 
+    		driver.findElement(ObjectRepository.getobjectLocator(button_name)).click();
+    		System.out.println("Inside Catch , Success");
    		}
     	
     	

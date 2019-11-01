@@ -13,10 +13,10 @@ import cucumber.api.junit.Cucumber;
  
 @RunWith(Cucumber.class)
 @CucumberOptions(		
- features = "src/test/java/features/New App features/testApp.feature",
+ features = "src/test/java/features/New App features/SmokePack.feature",
  glue= {"stepDefinations"},
  plugin = {"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/TestAutomationReport.html"},
- tags = {"@RegressionPack"},
+ tags = {"@SmokePack"},
  monochrome = true
  )
  

@@ -17,7 +17,7 @@ And user waits for "10" seconds
  And user clicks on button "Log_In"
  And user waits for "5" seconds
  And user clicks on button "Invite"
-  And user waits for "2" seconds
+  And user waits for "5" seconds
  
  And user clicks on button "Invite_a_friend"
   And user waits for "2" seconds
@@ -30,14 +30,14 @@ And user waits for "10" seconds
   
   Examples: 
     |   Platform    |   Email                           |   Username     |   Password    |  	Invitees						| 
-    |   Android     |   manoj.chauhan@prodigylabs.net   |   mchauhan9189 |   Qwerty123!! | 		 usrw23ser@yopmail.com		|
+    |   Android     |   manoj.chauhan@prodigylabs.net   |   mchauhan9189 |   Qwerty123!! | 		 us3ser@yopmail.com		|
 	
 	
 	@SmokePack @TC002_Internal_Transfer_DDA_To_SAV
 Scenario Outline: Verify Meed customer is able to successfully able to move money between accounts (Checkings to Savings))
 #One time transfer
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -106,14 +106,14 @@ And user waits for "10" seconds
   
   Examples: 
   | Platform  | Email                         | Username        | Password    |   Amount    | 
-  | Android   | manoj.chauhan@prodigylabs.net | mchauhan9189    | Qwerty123!! |   1.00    	|
+  | Android   | manoj.chauhan@prodigylabs.net | mchauhan9189    | Qwerty123!! |   5.00    	|
   
   
   @SmokePack @TC004_Scheduled_Payment
 Scenario Outline: Verify Meed customer is able to successfully able to move money between accounts (Checkings to Savings))
 #Scheduled transfer
 Given user launches the app in "<Platform>" device
-And user waits for "15" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -149,7 +149,7 @@ And user waits for "15" seconds
   
   Examples: 
 	|	Platform	|	Email													|	Username				|	Password		|	 	Amount		|	
-	|	Android		|	manoj.chauhan@prodigylabs.net	|	mchauhan9189		|	Qwerty123!!	|		1.00		|
+	|	Android		|	manoj.chauhan@prodigylabs.net	|	mchauhan9189		|	Qwerty123!!	|		11.00		|
 	
 	
 	
@@ -157,7 +157,7 @@ And user waits for "15" seconds
 	@SmokePack @TC005_Direct_Deposit
 Scenario Outline: Verify Meed customer is able to successfully perform direct deposit 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -190,7 +190,7 @@ And user waits for "5" seconds
 	@SmokePack @TC006_Deposit_From_Cards
 Scenario Outline: Verify Meed customer is able to successfully deposit from Credit/Debit Card 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -235,7 +235,7 @@ And user waits for "5" seconds
   @SmokePack @TC007_More_EDIT_NICKNAME
 Scenario Outline: Verify Meed customer is able to edit Nickname in Meed app 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -271,7 +271,7 @@ And user waits for "5" seconds
     @SmokePack @TC008_More_Freeze_Card
 Scenario Outline: Verify Meed customer is able to view Freeze/Unfreeze Card in Meed app 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -304,7 +304,7 @@ And user waits for "5" seconds
     @SmokePack @TC009_More_Report_Stolen
 Scenario Outline: Verify Meed customer is able to report Lost/Stolen Card in Meed app 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -338,7 +338,7 @@ And user waits for "5" seconds
     @SmokePack @TC010_More_Change_Language
 Scenario Outline: Verify Meed customer is able to Change Language to Spanish in Meed app 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -377,7 +377,7 @@ And user waits for "5" seconds
      @SmokePack @TC011_More_Contact_preferences
 Scenario Outline: Verify Meed customer is able to Change Contact Preferences in Meed app 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -414,7 +414,7 @@ And user waits for "3" seconds
     @SmokePack @TC012_Meed_Extras
 Scenario Outline: Verify Meed customer is able to view Meed Rewards to Meed app 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -450,7 +450,7 @@ And user waits for "5" seconds
      @SmokePack @TC013_Meed_Cover
 Scenario Outline: Verify Meed customer is able to view Meed Cover to Meed app 
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
@@ -475,7 +475,7 @@ And user waits for "5" seconds
     @SmokePack @TC014_P2P_Sent_money
 Scenario Outline: Verify Meed customer is able to successfully Pay Friends having Meed membership - Send Money
 Given user launches the app in "<Platform>" device
-And user waits for "5" seconds
+And user waits for "10" seconds
  And user clicks on button "Apply_now"
  And user waits for "3" seconds
  And user enters text "<Email>" in textbox "Your_email"
