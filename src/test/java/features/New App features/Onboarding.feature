@@ -60,36 +60,39 @@ And user waits for "15" seconds
   And user waits for "2" seconds
   And user clicks on button "I'm_good_to_go"
   
- And user waits for "2" seconds
  And user clicks on button "ALLOW"
- And user waits for "2" seconds
+ 
  And user clicks on label "Driver_License"
  And user waits for "30" seconds
  And user waits for "30" seconds
- And user waits for "30" seconds
+And user waits for "10" seconds
  
 And user enters text "<FirstName>" in textbox "First_Name"
 And user enters text "<LastName>" in textbox "Last_Name"
-And user enters text "<dob>" in textbox "DOB"
+And user clicks on label "DOB"
+And user selects "09" "20" "1960" from calendar
+
 And user enters text "<SSN>" in textbox "Social_Security"
 
 And user scrolls down 
 
 
+
 And user selects dropdown at index "1"
  And user clicks on label "Science" 
  And user waits for "2" seconds
-
-And user enters text "7000" in textbox "Monthly_Income_$"
+And user scrolls down 
+And user enters text "7000" in textbox "Monthly_Income"
 
 And user selects dropdown at index "2"
  And user clicks on label "Investments" 
  And user waits for "2" seconds
 
 And user scrolls down
+And user scrolls down
 
-And user selects dropdown at index "3"
- And user clicks on label ">1000-5000" 
+And user clicks on label "Monthly_Withdrawal"
+ And user clicks on label "0-1000" 
  And user waits for "2" seconds
 
  And user selects dropdown at index "4"
@@ -99,9 +102,11 @@ And user selects dropdown at index "3"
  And user clicks on button "Next"
  And user waits for "2" seconds
  And user enters text "<HomeAddress>" in textbox "Home_Address"
- And user enters text "<City>" in textbox "City"
+ And user enters text "<City>" in textbox "city"
  
 And user selects dropdown at index "0"
+And user scrolls down
+And user scrolls down
 And user scrolls down
 And user scrolls down
 And user scrolls down
@@ -116,6 +121,10 @@ And user scrolls down
  
  And user scrolls down
  And user scrolls down
+ And user scrolls down
+ And user scrolls down
+ And user scrolls down
+ 
  And user selects radio button "No_I_am_neither."
   And user clicks on button "Next"
   And user waits for "2" seconds
@@ -128,7 +137,6 @@ And user scrolls down
  
  And user waits for "30" seconds
  
-  
  
 
   Examples: 
