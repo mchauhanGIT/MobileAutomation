@@ -140,10 +140,8 @@ public class GenericSteps extends BaseTest{
     		
     	}
     	catch(Exception e) {
-    		wait.until(ExpectedConditions.visibilityOfElementLocated
-        			(ObjectRepository.getobjectLocator(textbox_name))).clear();
-        	wait.until(ExpectedConditions.visibilityOfElementLocated
-                    (ObjectRepository.getobjectLocator(textbox_name))).sendKeys(text_value);
+    		driver.findElement(ObjectRepository.getobjectLocator(textbox_name)).clear();
+    		driver.findElement(ObjectRepository.getobjectLocator(textbox_name)).sendKeys(text_value);
     		
     	}
    	
@@ -587,6 +585,7 @@ public class GenericSteps extends BaseTest{
     	@Given("^user selects \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" from calendar$")
     	public void user_selects_from_calendar(String month, int day, int year) throws Throwable {
     	    // Write code here that turns the phrase above into concrete actions
+    		
   		
     		Calendar mCalendar = Calendar.getInstance();    
         	String current_month = mCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
@@ -598,6 +597,10 @@ public class GenericSteps extends BaseTest{
         	
         	int current_year = mCalendar.get(Calendar.YEAR);
         	System.out.println("Year VALUE IS RETREIVED AS --- " + current_year);
+        	
+        	
+        	int currentmonthInt = mCalendar.get(Calendar.DAY_OF_MONTH);
+        	System.out.println("Month VALUE IS RETREIVED AS --- " + currentmonthInt);
         
     			
     //	System.out.println("CURRENT DATE- " +driver.findElement(By.xpath("//android.view.View[contains(@text, 'Oct')]")).getText());	
@@ -627,6 +630,104 @@ public class GenericSteps extends BaseTest{
     			
     		}
     		
+    		
+    	//If month is given in digits	
+    		if(month.length()<=2)
+    		{
+    			
+    			int month_int = Integer.parseInt(month);
+    			
+    			 if(month_int>currentmonthInt)
+    	    		{
+    	    			do
+    	    			{
+    	    				WebElement current_mon_val, current_mon_oneahead;
+    	    				int cmon_x, cmon_y, mon_x, mon_y, temp;
+    	    				
+    	    				if(currentmonthInt<10)
+    	    				{
+    	    				 current_mon_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+0+currentmonthInt +"']"));
+    	    				 cmon_x = current_mon_val.getLocation().getX();
+    	    	    		 cmon_y = current_mon_val.getLocation().getY();
+    	    				}
+    	    				else
+    	    				{
+    	    					current_mon_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+currentmonthInt +"']"));
+    	       				 cmon_x = current_mon_val.getLocation().getX();
+    	       	    		 cmon_y = current_mon_val.getLocation().getY();
+    	    				}
+    					
+    	    				temp=currentmonthInt+1;
+    	    				if(temp<10)
+    	    				{
+    	    					current_mon_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+0+temp+"']"));
+    	       				 mon_x = current_mon_oneahead.getLocation().getX();
+    	               		 mon_y = current_mon_oneahead.getLocation().getY();
+    	    				}
+    	    				else
+    	    				{
+    	    				
+    	    				 current_mon_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+temp+"']"));
+    	    				 mon_x = current_mon_oneahead.getLocation().getX();
+    	            		 mon_y = current_mon_oneahead.getLocation().getY();
+    	    				}
+    	    				touchAction.longPress(PointOption.point(mon_x, mon_y)).moveTo(PointOption.point(cmon_x, cmon_y)).release().perform();
+    	    				++currentmonthInt;
+    	    				System.out.println("Current Day is :" + currentmonthInt);
+    	    				
+    	    			}while (month_int>currentmonthInt);
+    	    		}
+    	    		else if(month_int<currentmonthInt)
+    	    		{
+    	    			
+    	    			do
+    	    			{	
+    	    				WebElement current_mon_val, current_mon_oneahead;
+    	    				int cmon_x, cmon_y, mon_x, mon_y, temp;
+    	    				
+    	    				if(currentmonthInt<10)
+    	    				{
+    	    				 current_mon_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+0+currentmonthInt +"']"));
+    	    				 cmon_x = current_mon_val.getLocation().getX();
+    	    	    		 cmon_y = current_mon_val.getLocation().getY();
+    	    				}
+    	    				else
+    	    				{
+    	    					current_mon_val	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+currentmonthInt +"']"));
+    	       				 cmon_x = current_mon_val.getLocation().getX();
+    	       	    		 cmon_y = current_mon_val.getLocation().getY();
+    	    				}
+    					
+    	    				temp=currentmonthInt-1;
+    	    				if(temp<10)
+    	    				{
+    	    					current_mon_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+0+temp+"']"));
+    	       				 mon_x = current_mon_oneahead.getLocation().getX();
+    	               		 mon_y = current_mon_oneahead.getLocation().getY();
+    	    				}
+    	    				else
+    	    				{
+    	    				
+    	    				 current_mon_oneahead	= driver.findElement(By.xpath("//android.widget.Button[@text ='"+temp+"']"));
+    	    				 mon_x = current_mon_oneahead.getLocation().getX();
+    	            		 mon_y = current_mon_oneahead.getLocation().getY();
+    	    				}
+    	    				touchAction.longPress(PointOption.point(mon_x, mon_y)).moveTo(PointOption.point(mon_x, mon_y)).release().perform();
+    	    				--currentmonthInt;
+    	    				
+    	    			}while (month_int<currentmonthInt);
+    	    			
+    	    		}
+    	    
+    			
+    		}
+    		//If month value is in Alphabets
+    		
+    		
+    		else
+    		{
+    		
+    			
     		// Doing Touch action for Months
     		List<String> months = Arrays.asList("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
     		int indexOfCurrentMonth = 0; int indexofinputMonth =0;
@@ -692,6 +793,8 @@ public class GenericSteps extends BaseTest{
     				
     			}while (indexofinputMonth<indexOfCurrentMonth);
     		}
+    		}
+    		
     		
     		//Touch action for Day 
             if(day>current_day)
@@ -775,6 +878,7 @@ public class GenericSteps extends BaseTest{
     			}while (day<current_day);
     			
     		}
+    		
     	
         	Reporter.addScreenCaptureFromPath(screenshot.captureScreenShot(sName)); 	
     		
